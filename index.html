@@ -1,0 +1,1871 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>sales app f2</title>
+  
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>পেট্রোল পাম্প রশিদ অ্যাপ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3741;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8; /* Added for previous due */
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --border-color: #dee2e6;
+            --input-bg: #fff;
+            --body-bg: #f1f3f6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans Bengali', sans-serif;
+            background-color: var(--body-bg);
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding: 10px;
+            font-size: 14px; /* Base font size for mobile */
+            -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+        }
+
+        .app-container {
+            max-width: 600px; /* Limit width on larger screens */
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        #clear-all-btn {
+            background-color: var(--warning-color);
+            color: var(--dark-color);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+         #clear-all-btn:hover {
+            opacity: 0.9;
+         }
+
+        #datetime {
+            font-size: 0.9em;
+        }
+
+        .tabs {
+            display: flex;
+            background-color: var(--light-color);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto; /* Allow horizontal scrolling on small screens */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        }
+
+        .tab-button {
+            padding: 10px 12px;
+            cursor: pointer;
+            border: none;
+            background-color: transparent;
+            font-family: 'Noto Sans Bengali', sans-serif;
+            font-size: 0.95em;
+            color: var(--secondary-color);
+            font-weight: 500;
+            white-space: nowrap; /* Prevent wrapping */
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+         .tab-button:hover:not(.active){
+             background-color: #e9ecef;
+         }
+
+        .tab-content {
+            padding: 15px;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* --- Form Styles --- */
+        .form-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .form-section h3 {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .input-group {
+            margin-bottom: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .input-group label {
+            flex-basis: 80px; /* Default fixed width for labels */
+            font-weight: 500;
+            color: var(--secondary-color);
+            text-align: left;
+            font-size: 0.95em;
+            flex-shrink: 0; /* Prevent label from shrinking */
+        }
+
+        .input-group input[type="number"],
+        .input-group input[type="text"],
+        .input-group input[type="tel"],
+        .input-group input[type="date"],
+        .input-group textarea {
+            flex-grow: 1;
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: 'Noto Sans Bengali', sans-serif;
+            font-size: 1em;
+            background-color: var(--input-bg);
+            min-width: 80px;
+            width: auto; /* Allow shrinking for flex */
+        }
+        .input-group input[type="number"] {
+            text-align: right;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        .input-group .currency-unit {
+             color: var(--secondary-color);
+             font-weight: 500;
+             margin-left: -20px; /* Overlap slightly */
+             padding-right: 5px; /* Padding so currency doesn't touch edge */
+             z-index: 1;
+             background-color: var(--input-bg); /* Match input bg if overlapping */
+             flex-shrink: 0;
+        }
+
+        /* Product Input Group - Label | Liter Input | Amount Input | Unit */
+        .product-input-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .product-input-group label {
+            flex-basis: 65px; /* Fixed width for product name */
+            font-weight: 500;
+            font-size: 0.95em;
+            color: var(--secondary-color);
+            text-align: left;
+            margin-right: 5px; /* Space after label */
+             flex-shrink: 0;
+        }
+        .product-input-group input[type="number"] {
+            flex-grow: 1; /* Share remaining space */
+            flex-basis: 0; /* Allow shrinking and growing based on flex-grow */
+            min-width: 60px; /* Minimum width for inputs */
+            padding: 8px;
+            text-align: right;
+        }
+        .product-input-group .currency-unit {
+            margin-left: 5px; /* Space before currency unit */
+            font-weight: 500;
+            color: var(--secondary-color);
+             flex-shrink: 0;
+        }
+
+
+        .calculation-summary {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: var(--light-color);
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 1.05em;
+        }
+         .summary-row:last-child {
+             margin-bottom: 0;
+         }
+        .summary-row label {
+            font-weight: 500;
+            color: var(--secondary-color);
+        }
+        .summary-row span, .summary-row input {
+            font-weight: 700;
+            text-align: right;
+        }
+         .summary-row input {
+            padding: 6px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            max-width: 120px;
+            font-size: 1em;
+         }
+        #general-total-amount, #discount-total-amount { /* Combined style */
+            color: var(--primary-color);
+            font-size: 1.1em;
+        }
+        #general-due-amount, #discount-due-amount { /* Combined style */
+             font-size: 1.1em;
+         }
+         #general-due-amount.has-due, #discount-due-amount.has-due { /* Combined style */
+            color: var(--danger-color);
+         }
+          #discount-previous-due {
+             color: var(--info-color); /* Style for previous due */
+             font-weight: bold;
+         }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap; /* Allow buttons to wrap */
+        }
+
+        .action-buttons button {
+            flex-grow: 1; /* Allow buttons to share space */
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Noto Sans Bengali', sans-serif;
+            font-size: 1em;
+            font-weight: 500;
+            transition: opacity 0.2s;
+            min-width: 100px; /* Minimum width */
+        }
+        .action-buttons button:hover {
+            opacity: 0.9;
+        }
+
+        .save-btn { background-color: var(--success-color); color: white; }
+        .print-btn { background-color: var(--primary-color); color: white; }
+        .share-btn { background-color: var(--secondary-color); color: white; }
+        .save-settings-btn { background-color: var(--success-color); color: white; margin-top: 10px;}
+
+        /* Settings Tab Specific */
+        #settings-tab .input-group label {
+             flex-basis: 120px; /* Wider labels for settings */
+        }
+
+        /* Saved Data / Due List */
+        .data-list-container {
+             max-height: 400px;
+             overflow-y: auto;
+             border: 1px solid var(--border-color);
+             border-radius: 5px;
+             margin-top: 10px;
+        }
+        .data-table {
+             width: 100%;
+             border-collapse: collapse;
+        }
+         .data-table th, .data-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9em;
+            vertical-align: middle; /* Align vertically */
+         }
+         .data-table th {
+             background-color: var(--light-color);
+             font-weight: 700;
+             position: sticky;
+             top: 0; /* Sticky header */
+             z-index: 1;
+         }
+         .data-table tr:last-child td {
+             border-bottom: none;
+         }
+         .data-table td.amount { text-align: right; }
+         .data-table .due-item td:first-child { color: var(--danger-color); font-weight: 500; }
+         .data-table td.actions { text-align: center; }
+         .data-table .print-saved-btn {
+             background-color: var(--info-color);
+             color: white;
+             border: none;
+             padding: 4px 8px;
+             border-radius: 3px;
+             cursor: pointer;
+             font-size: 0.85em;
+         }
+         .data-table .print-saved-btn:hover { opacity: 0.9; }
+         .due-customer-link {
+            color: var(--primary-color);
+            text-decoration: underline;
+            cursor: pointer;
+         }
+         .due-customer-link:hover {
+            color: var(--dark-color);
+         }
+
+        /* Report Tab Specific */
+        #report-tab h4 { margin-top: 15px; margin-bottom: 5px; color: var(--primary-color);}
+        #report-tab h5 { margin-top: 10px; margin-bottom: 3px; color: var(--secondary-color);}
+        #report-content p {
+            margin-bottom: 5px;
+            font-size: 1em;
+        }
+        #report-content strong {
+            font-weight: bold;
+        }
+        #generate-report-btn {
+             background-color: var(--primary-color);
+             color: white;
+             border: none;
+             padding: 8px 15px;
+             border-radius: 5px;
+             cursor: pointer;
+             font-weight: 500;
+             font-size: 1em;
+         }
+         #generate-report-btn:hover { opacity: 0.9; }
+
+        footer {
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+            font-size: 0.85em;
+            color: var(--secondary-color);
+            background-color: var(--light-color);
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Print specific styles */
+        @media print {
+            body {
+                padding: 0;
+                font-size: 9pt;
+                background-color: white;
+                color: black;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .app-container {
+                max-width: 100%;
+                box-shadow: none;
+                border-radius: 0;
+                border: none;
+                margin: 0;
+                padding: 0;
+            }
+            header, .tabs, .action-buttons, footer, #clear-all-btn,
+            #settings-tab, #saved-data-tab, #due-list-tab, #report-tab,
+            #generate-report-btn, .print-saved-btn, #clear-saved-data-filter-btn {
+                display: none !important;
+            }
+             #saved-data-tab .data-table th:last-child,
+             #saved-data-tab .data-table td:last-child {
+                display: none !important;
+             }
+            .tab-content, .tab-pane {
+                display: block !important;
+                padding: 0 !important;
+            }
+             #print-receipt-area {
+                 display: block !important;
+                 width: 100%;
+             }
+             #general-sales-tab, #discount-sales-tab {
+                 display: none !important; /* Hide form tabs during print */
+             }
+            .form-section, .calculation-summary {
+                margin-bottom: 5px;
+                padding-bottom: 3px;
+                border: none;
+            }
+            .input-group input, .input-group textarea, .summary-row input {
+                border: none;
+                padding: 1px;
+                background: transparent;
+             }
+             #discount-previous-due {
+                display: block;
+             }
+            .product-input-group, .input-group {
+                 gap: 3px; margin-bottom: 3px;
+            }
+             .calculation-summary { padding: 3px 0; background: transparent;}
+             .summary-row { margin-bottom: 2px; font-size: 0.95em;}
+             .summary-row label[for="discount-previous-due-label"] { display: inline; }
+
+            h3 { font-size: 1.0em; margin-bottom: 3px; text-align: center;}
+
+            #print-receipt-content {
+                width: 70mm; /* Adjusted for common thermal paper, can be 56mm for 58mm paper */
+                margin: 0 auto;
+                font-family: 'Noto Sans Bengali', 'Arial', sans-serif; /* Bengali font first */
+                font-size: 8pt;
+                line-height: 1.4;
+                padding: 2mm;
+            }
+            #print-receipt-content .header { text-align: center; margin-bottom: 3px; }
+            #print-receipt-content .header h3 { font-size: 10pt; margin-bottom: 1px; font-weight: bold;}
+            #print-receipt-content .header p { font-size: 8pt; margin-bottom: 0px; line-height: 1.2; }
+            
+            #print-receipt-content .header .org-phone { margin-bottom: 3px; } /* Space after phone */
+            #print-receipt-content .header .datetime-container {
+                text-align: right;
+                font-size: 7.5pt;
+                margin-top: 3px;
+            }
+            #print-receipt-content .header .datetime-container p {
+                margin-bottom: 0;
+                line-height: 1.1;
+            }
+
+            #print-receipt-content .customer-info { text-align: left; margin-bottom: 3px; font-size: 8pt;}
+            #print-receipt-content .customer-info p { margin-bottom: 1px; }
+            #print-receipt-content hr {
+                border: none;
+                border-top: 1px dashed black;
+                margin: 2mm 0; /* Increased margin for hr */
+                height: 1px;
+            }
+            #print-receipt-content .items { margin-bottom: 3px; }
+            #print-receipt-content .item-header-line,
+            #print-receipt-content .item-line {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 1px;
+                font-size: 8pt;
+            }
+             #print-receipt-content .item-header-line { font-weight: bold; border-bottom: 1px dashed #555; padding-bottom: 1px; margin-bottom:2px;}
+
+            #print-receipt-content .item-header-line span:nth-child(1), /* পণ্য */
+            #print-receipt-content .item-line span:nth-child(1) { flex-basis: 30%; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            #print-receipt-content .item-header-line span:nth-child(2), /* লিটার */
+            #print-receipt-content .item-line span:nth-child(2) { flex-basis: 20%; text-align: right; }
+            #print-receipt-content .item-header-line span:nth-child(3), /* দর */
+            #print-receipt-content .item-line span:nth-child(3) { flex-basis: 25%; text-align: right; }
+            #print-receipt-content .item-header-line span:nth-child(4), /* টাকা */
+            #print-receipt-content .item-line span:nth-child(4) { flex-basis: 25%; text-align: right; font-weight: bold; }
+
+
+            #print-receipt-content .totals { border-top: 1px dashed black; margin-top: 3px; padding-top: 3px; }
+            #print-receipt-content .totals .item-line { font-size: 8.5pt; } /* Slightly larger for totals */
+            #print-receipt-content .totals .item-line span:first-child { font-weight: normal; text-align: left; flex-basis: 60%; } /* Label */
+            #print-receipt-content .totals .item-line span:last-child { font-weight: bold; text-align: right; flex-basis: 40%;} /* Amount */
+
+            #print-receipt-content .amount-in-words {
+                font-size: 8pt;
+                text-align: left;
+                margin-top: 3px;
+                font-style: italic;
+            }
+            #print-receipt-content .footer-thanks {
+                text-align:center;
+                font-size: 8pt;
+                margin-top: 5px; /* Space before thanks */
+            }
+             #print-receipt-content .footer-dev {
+                 text-align:center;
+                 font-size: 7pt;
+                 margin-top:2px;
+             }
+
+        }
+        /* Hidden area for generated print receipt */
+        #print-receipt-area { display: none; }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            body { font-size: 13px; padding: 5px; }
+            .app-container { border-radius: 5px; }
+            header { padding: 8px 10px;}
+            .tab-button { padding: 8px 10px; font-size: 0.85em; }
+            .tab-content { padding: 10px; }
+
+            .product-input-group {
+                flex-wrap: wrap; /* Allow wrapping on very small screens if needed */
+            }
+            .product-input-group label {
+                flex-basis: 60px; /* Slightly smaller label */
+                font-size: 0.9em;
+                margin-right: 3px;
+            }
+            .product-input-group input[type="number"] {
+                padding: 7px;
+                font-size: 0.95em;
+                min-width: 50px; /* Adjust min-width */
+            }
+            .product-input-group .currency-unit { margin-left: 3px;}
+
+
+            .input-group {
+                /* flex-direction: column; align-items: stretch; gap: 5px; */ /* Previous style, revised */
+                 align-items: flex-start; /* Align items to start if wrapping */
+            }
+            .input-group label {
+                flex-basis: 100%; /* Label takes full width if wraps */
+                margin-bottom: 3px; /* Space below label if wraps */
+                text-align: left;
+            }
+            .input-group input, .input-group textarea, .input-group input[type="date"] {
+                width: 100%;
+            }
+             .input-group.inline-label { /* New class for specific groups to keep label inline */
+                flex-direction: row;
+                align-items: center;
+             }
+             .input-group.inline-label label {
+                flex-basis: 70px; /* Or auto, adjust as needed */
+                width: auto;
+                margin-bottom: 0;
+             }
+             .input-group.inline-label input,
+             .input-group.inline-label textarea {
+                flex-grow: 1;
+                width: auto;
+             }
+
+
+            .action-buttons button { font-size: 0.9em; padding: 8px 10px; }
+            .data-table th, .data-table td { padding: 5px; font-size: 0.85em;}
+
+            #report-tab .input-group { flex-direction: row; align-items: center; }
+            #report-tab .input-group label { flex-basis: auto; margin-right: 5px; width: auto; margin-bottom: 0;}
+            #report-tab .input-group input[type="date"] { width: auto; flex-grow: 1; }
+        }
+         @media (max-width: 360px) { /* Even smaller screens */
+             .product-input-group label { flex-basis: 100%; margin-bottom: 3px; }
+             .product-input-group input[type="number"] { flex-basis: calc(50% - 10px); } /* Two inputs per line */
+             .product-input-group .currency-unit { margin-left: auto; padding-left: 5px;}
+         }
+
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <header>
+            <button id="clear-all-btn">ফর্ম ক্লিয়ার</button>
+            <div id="datetime"></div>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-button active" data-tab="discount-sales">ছাড় বিক্রয়</button>
+            <button class="tab-button" data-tab="general-sales">সাধারণ বিক্রয়</button>
+            <button class="tab-button" data-tab="settings">সেটিংস</button>
+            <button class="tab-button" data-tab="saved-data">সেভ ডাটা</button>
+            <button class="tab-button" data-tab="due-list">বাকির তালিকা</button>
+            <button class="tab-button" data-tab="report">রিপোর্ট</button>
+        </nav>
+
+        <div class="tab-content">
+            <!-- Discount Sales Tab -->
+            <div id="discount-sales-tab" class="tab-pane active">
+                 <form id="discount-sales-form">
+                    <div class="form-section">
+                        <div class="product-input-group">
+                            <label for="discount-petrol-liter">পেট্রোল</label>
+                            <input type="number" id="discount-petrol-liter" step="0.01" placeholder="লিটার" inputmode="decimal">
+                            <input type="number" id="discount-petrol-amount" step="0.01" placeholder="টাকা" inputmode="decimal">
+                            <span class="currency-unit">৳</span>
+                        </div>
+                        <div class="product-input-group">
+                            <label for="discount-octane-liter">অকটেন</label>
+                            <input type="number" id="discount-octane-liter" step="0.01" placeholder="লিটার" inputmode="decimal">
+                            <input type="number" id="discount-octane-amount" step="0.01" placeholder="টাকা" inputmode="decimal">
+                            <span class="currency-unit">৳</span>
+                        </div>
+                        <div class="product-input-group">
+                            <label for="discount-diesel-liter">ডিজেল</label>
+                            <input type="number" id="discount-diesel-liter" step="0.01" placeholder="লিটার" inputmode="decimal">
+                            <input type="number" id="discount-diesel-amount" step="0.01" placeholder="টাকা" inputmode="decimal">
+                            <span class="currency-unit">৳</span>
+                        </div>
+                        <div class="product-input-group">
+                            <label for="discount-mobil-liter">মবিল</label>
+                            <input type="number" id="discount-mobil-liter" step="0.01" placeholder="লিটার/عدد" inputmode="decimal">
+                            <input type="number" id="discount-mobil-amount" step="0.01" placeholder="টাকা" inputmode="decimal">
+                            <span class="currency-unit">৳</span>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>অন্যান্য তথ্য</h3>
+                        <div class="input-group inline-label">
+                            <label for="discount-customer-info">গাড়ি নং/নাম</label>
+                            <input type="text" id="discount-customer-info" placeholder="গাড়ির নাম্বার বা ক্রেতার নাম" list="customer-suggestions">
+                        </div>
+                        <div class="input-group inline-label">
+                            <label for="discount-phone">ফোন নম্বর</label>
+                            <input type="tel" id="discount-phone" placeholder="ক্রেতার ফোন নম্বর" list="phone-suggestions">
+                        </div>
+                         <div class="input-group inline-label">
+                            <label for="discount-remarks">মন্তব্য</label>
+                            <textarea id="discount-remarks" rows="2" placeholder="কোন মন্তব্য থাকলে লিখুন"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="calculation-summary">
+                         <div class="summary-row">
+                            <label id="discount-previous-due-label">পূর্বের বাকি:</label>
+                            <span id="discount-previous-due">0.00</span> <span class="currency-unit">৳</span>
+                        </div>
+                        <div class="summary-row">
+                            <label>চলতি মোট:</label>
+                            <span id="discount-current-items-total">0.00</span> <span class="currency-unit">৳</span>
+                        </div>
+                        <div class="summary-row">
+                            <label>সর্বমোট টাকা:</label>
+                            <span id="discount-total-amount">0.00</span> <span class="currency-unit">৳</span>
+                        </div>
+                         <div class="summary-row">
+                            <label for="discount-paid-amount">জমা:</label>
+                            <input type="number" id="discount-paid-amount" step="0.01" placeholder="জমা টাকা" inputmode="decimal"> <span class="currency-unit">৳</span>
+                        </div>
+                         <div class="summary-row">
+                            <label>নতুন বাকি:</label>
+                            <span id="discount-due-amount">0.00</span> <span class="currency-unit">৳</span>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button type="button" class="save-btn" data-type="discount">সংরক্ষণ</button>
+                        <button type="button" class="print-btn" data-type="discount">সংরক্ষণ ও প্রিন্ট</button>
+                        <button type="button" class="share-btn" data-type="discount">শেয়ার</button>
+                    </div>
+                </form>
+            </div>
+
+             <!-- General Sales Tab -->
+            <div id="general-sales-tab" class="tab-pane">
+                <form id="general-sales-form">
+                    <div class="form-section">
+                        <div class="product-input-group">
+                            <label for="general-petrol-liter">পেট্রোল</label>
+                            <input type="number" id="general-petrol-liter" step="0.01" placeholder="লিটার" inputmode="decimal">
+                            <input type="number" id="general-petrol-amount" step="0.01" placeholder="টাকা" inputmode="decimal">
+                            <span class="currency-unit">৳</span>
+                        </div>
+                        <div class="product-input-group">
+                            <label for="general-octane-liter">অকটেন</label>
+                            <input type="number" id="general-octane-liter" step="0.01" placeholder="লিটার" inputmode="decimal">
+                            <input type="number" id="general-octane-amount" step="0.01" placeholder="টাকা" inputmode="decimal">
+                            <span class="currency-unit">৳</span>
+                        </div>
+                        <div class="product-input-group">
+                            <label for="general-diesel-liter">ডিজেল</label>
+                            <input type="number" id="general-diesel-liter" step="0.01" placeholder="লিটার" inputmode="decimal">
+                            <input type="number" id="general-diesel-amount" step="0.01" placeholder="টাকা" inputmode="decimal">
+                            <span class="currency-unit">৳</span>
+                        </div>
+                        <div class="product-input-group">
+                            <label for="general-mobil-liter">মবিল</label>
+                            <input type="number" id="general-mobil-liter" step="0.01" placeholder="লিটার/عدد" inputmode="decimal">
+                            <input type="number" id="general-mobil-amount" step="0.01" placeholder="টাকা" inputmode="decimal">
+                            <span class="currency-unit">৳</span>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>অন্যান্য তথ্য (ঐচ্ছিক)</h3>
+                        <div class="input-group inline-label">
+                            <label for="general-customer-info">গাড়ি নং/নাম</label>
+                            <input type="text" id="general-customer-info" placeholder="গাড়ির নাম্বার বা ক্রেতার নাম" list="customer-suggestions">
+                        </div>
+                        <div class="input-group inline-label">
+                            <label for="general-phone">ফোন নম্বর</label>
+                            <input type="tel" id="general-phone" placeholder="ক্রেতার ফোন নম্বর" list="phone-suggestions">
+                        </div>
+                         <div class="input-group inline-label">
+                            <label for="general-remarks">মন্তব্য</label>
+                            <textarea id="general-remarks" rows="2" placeholder="কোন মন্তব্য থাকলে লিখুন"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="calculation-summary">
+                        <div class="summary-row">
+                            <label>মোট টাকা:</label>
+                            <span id="general-total-amount">0.00</span> <span class="currency-unit">৳</span>
+                        </div>
+                         <div class="summary-row">
+                            <label for="general-paid-amount">জমা:</label>
+                            <input type="number" id="general-paid-amount" step="0.01" placeholder="জমা টাকা" inputmode="decimal"> <span class="currency-unit">৳</span>
+                        </div>
+                         <div class="summary-row">
+                            <label>বাকি:</label>
+                            <span id="general-due-amount">0.00</span> <span class="currency-unit">৳</span>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button type="button" class="save-btn" data-type="general">সংরক্ষণ</button>
+                        <button type="button" class="print-btn" data-type="general">সংরক্ষণ ও প্রিন্ট</button>
+                        <button type="button" class="share-btn" data-type="general">শেয়ার</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings-tab" class="tab-pane">
+                 <div class="form-section">
+                    <h3>সাধারণ মূল্য সেটিং</h3>
+                    <div class="input-group inline-label">
+                        <label for="setting-petrol-price">পেট্রোল মূল্য</label>
+                        <input type="number" id="setting-petrol-price" step="0.01" placeholder="প্রতি লিটার" inputmode="decimal">
+                    </div>
+                    <div class="input-group inline-label">
+                        <label for="setting-octane-price">অকটেন মূল্য</label>
+                        <input type="number" id="setting-octane-price" step="0.01" placeholder="প্রতি লিটার" inputmode="decimal">
+                    </div>
+                    <div class="input-group inline-label">
+                        <label for="setting-diesel-price">ডিজেল মূল্য</label>
+                        <input type="number" id="setting-diesel-price" step="0.01" placeholder="প্রতি লিটার" inputmode="decimal">
+                    </div>
+                     <div class="input-group inline-label">
+                        <label for="setting-mobil-price">মবিল মূল্য</label>
+                        <input type="number" id="setting-mobil-price" step="0.01" placeholder="প্রতি লিটার/ইউনিট" inputmode="decimal">
+                    </div>
+                </div>
+                 <div class="form-section">
+                    <h3>ছাড় মূল্য সেটিং</h3>
+                    <div class="input-group inline-label">
+                        <label for="setting-petrol-discount-price">পেট্রোল ছাড় মূল্য</label>
+                        <input type="number" id="setting-petrol-discount-price" step="0.01" placeholder="প্রতি লিটার" inputmode="decimal">
+                    </div>
+                    <div class="input-group inline-label">
+                        <label for="setting-octane-discount-price">অকটেন ছাড় মূল্য</label>
+                        <input type="number" id="setting-octane-discount-price" step="0.01" placeholder="প্রতি লিটার" inputmode="decimal">
+                    </div>
+                    <div class="input-group inline-label">
+                        <label for="setting-diesel-discount-price">ডিজেল ছাড় মূল্য</label>
+                        <input type="number" id="setting-diesel-discount-price" step="0.01" placeholder="প্রতি লিটার" inputmode="decimal">
+                    </div>
+                     <div class="input-group inline-label">
+                        <label for="setting-mobil-discount-price">মবিল ছাড় মূল্য</label>
+                        <input type="number" id="setting-mobil-discount-price" step="0.01" placeholder="প্রতি লিটার/ইউনিট" inputmode="decimal">
+                    </div>
+                </div>
+                 <div class="form-section">
+                    <h3>ব্যবসার তথ্য সেটিং</h3>
+                    <div class="input-group inline-label">
+                        <label for="setting-header-name">রশিদের হেডার</label>
+                        <input type="text" id="setting-header-name" placeholder="যেমন: আল্লাহর দান ফিলিং স্টেশন">
+                    </div>
+                     <div class="input-group inline-label">
+                        <label for="setting-dealer-name">ডিলার নাম</label>
+                        <input type="text" id="setting-dealer-name" placeholder="ডিলারের নাম (যদি থাকে)">
+                    </div>
+                    <div class="input-group inline-label">
+                        <label for="setting-address">ঠিকানা</label>
+                        <input type="text" id="setting-address" placeholder="প্রতিষ্ঠানের ঠিকানা">
+                    </div>
+                    <div class="input-group inline-label">
+                        <label for="setting-phone">ফোন নম্বর</label>
+                        <input type="tel" id="setting-phone" placeholder="যোগাযোগের নম্বর">
+                    </div>
+                </div>
+                 <div class="form-section">
+                    <h3>Google Sheet সংযোগ</h3>
+                    <div class="input-group inline-label">
+                        <label for="setting-sheet-id">Sheet ID</label>
+                        <input type="text" id="setting-sheet-id" placeholder="Google Sheet ID">
+                    </div>
+                     <div class="input-group inline-label">
+                        <label for="setting-api-key">Web App URL</label>
+                        <input type="text" id="setting-api-key" placeholder="Google Apps Script Web App URL">
+                    </div>
+                    <small>Sheet ID এবং Apps Script Web App URL এখানে ইনপুট করুন। <a href="https://github.com/kamal4207/PetrolPumpAppScript" target="_blank" rel="noopener noreferrer">কিভাবে পাবেন?</a></small>
+                 </div>
+                 <button type="button" id="save-settings-btn" class="save-settings-btn">সেটিংস সংরক্ষণ করুন</button>
+            </div>
+
+            <!-- Saved Data Tab -->
+            <div id="saved-data-tab" class="tab-pane">
+                <h3>সংরক্ষিত সকল বিক্রয় ডাটা <button id="clear-saved-data-filter-btn" style="display:none; font-size:0.8em; margin-left:10px; padding: 3px 6px; cursor:pointer; background-color: var(--warning-color); border:none; border-radius:3px;">ফিল্টার সরান</button></h3>
+                <div class="data-list-container">
+                     <table class="data-table" id="saved-data-table">
+                         <thead>
+                            <tr>
+                                <th>আইডি</th>
+                                <th>তারিখ ও সময়</th>
+                                <th>গ্রাহক</th>
+                                <th>ধরন</th>
+                                <th class="amount">মোট</th>
+                                <th class="amount">জমা</th>
+                                <th class="amount">বাকি</th>
+                                <th>আইটেম</th>
+                                <th>পদক্ষেপ</th>
+                            </tr>
+                         </thead>
+                         <tbody>
+                             <tr><td colspan="9" style="text-align:center;">কোন ডাটা পাওয়া যায়নি।</td></tr>
+                         </tbody>
+                     </table>
+                </div>
+            </div>
+
+            <!-- Due List Tab -->
+            <div id="due-list-tab" class="tab-pane">
+                <h3>বাকির তালিকা</h3>
+                 <div class="data-list-container">
+                     <table class="data-table" id="due-list-table">
+                         <thead>
+                             <tr>
+                                <th>আইডি</th>
+                                <th>সর্বশেষ লেনদেন</th>
+                                <th>গ্রাহক</th>
+                                <th>ফোন</th>
+                                <th class="amount">মোট বাকি</th>
+                                <th>মন্তব্য</th>
+                            </tr>
+                         </thead>
+                         <tbody>
+                             <tr><td colspan="6" style="text-align:center;">কোন বাকি ডাটা পাওয়া যায়নি।</td></tr>
+                         </tbody>
+                     </table>
+                 </div>
+            </div>
+
+            <!-- Report Tab -->
+            <div id="report-tab" class="tab-pane">
+                <h3>রিপোর্ট</h3>
+                <div class="input-group" style="margin-bottom: 15px;">
+                    <label for="report-from-date">শুরুর তারিখ:</label>
+                    <input type="date" id="report-from-date">
+                    <label for="report-to-date" style="margin-left: 10px;">শেষ তারিখ:</label>
+                    <input type="date" id="report-to-date">
+                </div>
+                <button id="generate-report-btn" style="margin-bottom:20px;">রিপোর্ট আপডেট করুন</button>
+
+                <div id="report-content">
+                    <h4>দৈনিক রিপোর্ট (<span id="report-current-date" style="color: var(--primary-color); font-weight:bold;"></span>)</h4>
+                    <h5>সাধারণ বিক্রয়:</h5>
+                    <p>পেট্রোল: <strong id="report-general-petrol-liters">0.00</strong> লিটার, <strong id="report-general-petrol-amount">0.00</strong> ৳</p>
+                    <p>অকটেন: <strong id="report-general-octane-liters">0.00</strong> লিটার, <strong id="report-general-octane-amount">0.00</strong> ৳</p>
+                    <p>ডিজেল: <strong id="report-general-diesel-liters">0.00</strong> লিটার, <strong id="report-general-diesel-amount">0.00</strong> ৳</p>
+                    <p>মবিল: <strong id="report-general-mobil-liters">0.00</strong> লিটার/عدد, <strong id="report-general-mobil-amount">0.00</strong> ৳</p>
+                    <hr style="margin: 8px 0;">
+                    <h5>ছাড় বিক্রয়:</h5>
+                    <p>পেট্রোল: <strong id="report-discount-petrol-liters">0.00</strong> লিটার, <strong id="report-discount-petrol-amount">0.00</strong> ৳</p>
+                    <p>অকটেন: <strong id="report-discount-octane-liters">0.00</strong> লিটার, <strong id="report-discount-octane-amount">0.00</strong> ৳</p>
+                    <p>ডিজেল: <strong id="report-discount-diesel-liters">0.00</strong> লিটার, <strong id="report-discount-diesel-amount">0.00</strong> ৳</p>
+                    <p>মবিল: <strong id="report-discount-mobil-liters">0.00</strong> লিটার/عدد, <strong id="report-discount-mobil-amount">0.00</strong> ৳</p>
+                    <hr style="margin: 8px 0;">
+                    <h4>সামগ্রিক রিপোর্ট (নির্বাচিত সময়কাল)</h4>
+                    <p>সাধারণ বিক্রয় মোট লিটার (নির্বাচিত): <strong id="report-general-liters-selected">0.00</strong></p>
+                    <p>ছাড় বিক্রয় মোট লিটার (নির্বাচিত): <strong id="report-discount-liters-selected">0.00</strong></p>
+                    <p>মোট বাকি টাকা (সকল গ্রাহক): <strong id="report-total-due">0.00</strong> ৳</p>
+                    
+                    <h5 style="margin-top: 15px;">বিস্তারিত বাকির তালিকা (নির্বাচিত সময়কাল):</h5>
+                    <div class="data-list-container" style="max-height: 200px;">
+                        <table class="data-table" id="report-due-list-table">
+                            <thead>
+                                <tr>
+                                    <th>গ্রাহক</th>
+                                    <th>ফোন</th>
+                                    <th class="amount">মোট বাকি</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td colspan="3" style="text-align:center;">কোন বাকি ডাটা নেই।</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>kamal4207@gmail.com</footer>
+
+        <div id="print-receipt-area">
+            <div id="print-receipt-content"></div>
+        </div>
+
+        <datalist id="customer-suggestions"></datalist>
+        <datalist id="phone-suggestions"></datalist>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const MAX_LOCAL_STORAGE_ENTRIES = 10000;
+            const LOCAL_STORAGE_SETTINGS_KEY = 'fuelAppSettings';
+            const LOCAL_STORAGE_SALES_KEY = 'fuelSalesData';
+            const LOCAL_STORAGE_CUSTOMER_SUGGESTIONS_KEY = 'fuelCustomerSuggestions';
+            const LOCAL_STORAGE_PHONE_SUGGESTIONS_KEY = 'fuelPhoneSuggestions';
+
+            const datetimeElement = document.getElementById('datetime');
+            const tabs = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            const clearAllBtn = document.getElementById('clear-all-btn');
+            const saveSettingsBtn = document.getElementById('save-settings-btn');
+            const savedDataTableBody = document.getElementById('saved-data-table').querySelector('tbody');
+            const dueListTableBody = document.getElementById('due-list-table').querySelector('tbody');
+            const printReceiptArea = document.getElementById('print-receipt-area');
+            const printReceiptContent = document.getElementById('print-receipt-content');
+            const customerDatalist = document.getElementById('customer-suggestions');
+            const phoneDatalist = document.getElementById('phone-suggestions');
+            const generateReportBtn = document.getElementById('generate-report-btn');
+            const reportDueListTableBody = document.getElementById('report-due-list-table').querySelector('tbody');
+
+
+            const salesForms = {
+                general: document.getElementById('general-sales-form'),
+                discount: document.getElementById('discount-sales-form')
+            };
+
+            const fieldIds = {
+                petrolLiter: (prefix) => `${prefix}-petrol-liter`,
+                petrolAmount: (prefix) => `${prefix}-petrol-amount`,
+                octaneLiter: (prefix) => `${prefix}-octane-liter`,
+                octaneAmount: (prefix) => `${prefix}-octane-amount`,
+                dieselLiter: (prefix) => `${prefix}-diesel-liter`,
+                dieselAmount: (prefix) => `${prefix}-diesel-amount`,
+                mobilLiter: (prefix) => `${prefix}-mobil-liter`,
+                mobilAmount: (prefix) => `${prefix}-mobil-amount`,
+                customerInfo: (prefix) => `${prefix}-customer-info`,
+                phone: (prefix) => `${prefix}-phone`,
+                remarks: (prefix) => `${prefix}-remarks`,
+                previousDue: () => `discount-previous-due`,
+                currentItemsTotal: () => `discount-current-items-total`,
+                totalAmount: (prefix) => `${prefix}-total-amount`,
+                paidAmount: (prefix) => `${prefix}-paid-amount`,
+                dueAmount: (prefix) => `${prefix}-due-amount`,
+            };
+
+            let currentSettings = {};
+            let salesData = [];
+            let customerSuggestions = new Set();
+            let phoneSuggestions = new Set();
+            let currentActiveTabPrefix = 'discount';
+            let currentSavedDataFilter = null; // For filtering saved data
+
+            const formatCurrency = (value) => {
+                const num = parseFloat(value);
+                return isNaN(num) ? '0.00' : num.toFixed(2);
+            };
+            const formatLiters = (value) => {
+                const num = parseFloat(value);
+                return isNaN(num) ? '0.00' : num.toFixed(2);
+            };
+            const getElement = (id) => document.getElementById(id);
+            const getValue = (id) => getElement(id)?.value.trim() || '';
+            const getFloatValue = (id) => parseFloat(getElement(id)?.value) || 0;
+            const getFloatFromElement = (id) => parseFloat(getElement(id)?.textContent?.replace(/[^\d.-]/g, '')) || 0;
+            const setValue = (id, value) => {
+                 const el = getElement(id);
+                 if (el) el.value = value;
+            };
+            const setHTML = (id, html) => {
+                const el = getElement(id);
+                if (el) el.innerHTML = html;
+            };
+            const getNumericValue = (value) => parseFloat(value) || 0;
+
+            const updateDateTime = () => {
+                const now = new Date();
+                const optionsDate = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Dhaka' };
+                const optionsTime = { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true, timeZone: 'Asia/Dhaka' };
+                const formattedDate = now.toLocaleDateString('bn-BD', optionsDate);
+                const formattedTime = now.toLocaleTimeString('bn-BD', optionsTime);
+                if (datetimeElement) datetimeElement.textContent = `${formattedDate}, ${formattedTime}`;
+            };
+            setInterval(updateDateTime, 1000);
+            updateDateTime();
+
+            const defaultSettings = {
+                petrolPrice: 130, octanePrice: 135, dieselPrice: 110, mobilPrice: 500,
+                petrolDiscountPrice: 128, octaneDiscountPrice: 133, dieselDiscountPrice: 108, mobilDiscountPrice: 480,
+                headerName: 'আপনার ব্যবসার নাম', dealerName: '', address: 'আপনার ঠিকানা', phone: 'আপনার ফোন নম্বর',
+                sheetId: '', apiKey: ''
+            };
+
+            const loadSettings = () => {
+                const storedSettings = localStorage.getItem(LOCAL_STORAGE_SETTINGS_KEY);
+                currentSettings = storedSettings ? JSON.parse(storedSettings) : { ...defaultSettings };
+                Object.keys(defaultSettings).forEach(key => {
+                    if (currentSettings[key] === undefined) currentSettings[key] = defaultSettings[key];
+                });
+
+                setValue('setting-petrol-price', currentSettings.petrolPrice);
+                setValue('setting-octane-price', currentSettings.octanePrice);
+                setValue('setting-diesel-price', currentSettings.dieselPrice);
+                setValue('setting-mobil-price', currentSettings.mobilPrice);
+                setValue('setting-petrol-discount-price', currentSettings.petrolDiscountPrice);
+                setValue('setting-octane-discount-price', currentSettings.octaneDiscountPrice);
+                setValue('setting-diesel-discount-price', currentSettings.dieselDiscountPrice);
+                setValue('setting-mobil-discount-price', currentSettings.mobilDiscountPrice);
+                setValue('setting-header-name', currentSettings.headerName);
+                setValue('setting-dealer-name', currentSettings.dealerName);
+                setValue('setting-address', currentSettings.address);
+                setValue('setting-phone', currentSettings.phone);
+                setValue('setting-sheet-id', currentSettings.sheetId);
+                setValue('setting-api-key', currentSettings.apiKey);
+            };
+
+            const handleSaveSettings = () => {
+                currentSettings = {
+                    petrolPrice: getFloatValue('setting-petrol-price'),
+                    octanePrice: getFloatValue('setting-octane-price'),
+                    dieselPrice: getFloatValue('setting-diesel-price'),
+                    mobilPrice: getFloatValue('setting-mobil-price'),
+                    petrolDiscountPrice: getFloatValue('setting-petrol-discount-price'),
+                    octaneDiscountPrice: getFloatValue('setting-octane-discount-price'),
+                    dieselDiscountPrice: getFloatValue('setting-diesel-discount-price'),
+                    mobilDiscountPrice: getFloatValue('setting-mobil-discount-price'),
+                    headerName: getValue('setting-header-name'),
+                    dealerName: getValue('setting-dealer-name'),
+                    address: getValue('setting-address'),
+                    phone: getValue('setting-phone'),
+                    sheetId: getValue('setting-sheet-id'),
+                    apiKey: getValue('setting-api-key')
+                };
+                localStorage.setItem(LOCAL_STORAGE_SETTINGS_KEY, JSON.stringify(currentSettings));
+                alert('সেটিংস সংরক্ষণ করা হয়েছে!');
+                recalculateSalesForm('general');
+                recalculateSalesForm('discount');
+            };
+            if (saveSettingsBtn) saveSettingsBtn.addEventListener('click', handleSaveSettings);
+
+            const findTotalPreviousDue = (customerName, customerPhone) => {
+                if (!customerName && !customerPhone) return 0;
+
+                const searchName = customerName?.trim().toLowerCase() || null;
+                const searchPhone = customerPhone?.trim() || null;
+
+                if (!searchName && !searchPhone) return 0;
+
+                let latestDue = 0;
+                let latestTimestamp = null;
+
+                // Iterate in chronological order to find the most recent entry for the customer
+                const customerEntries = salesData.filter(entry => {
+                    const entryName = entry.customerInfo?.trim().toLowerCase() || null;
+                    const entryPhone = entry.phone?.trim() || null;
+                    let match = false;
+                    if (searchName && searchPhone) {
+                        match = entryName === searchName && entryPhone === searchPhone;
+                    } else if (searchName) {
+                        match = entryName === searchName;
+                    } else if (searchPhone) {
+                        match = entryPhone === searchPhone;
+                    }
+                    return match;
+                }).sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+
+                if (customerEntries.length > 0) {
+                    const lastEntry = customerEntries[customerEntries.length -1];
+                    latestDue = lastEntry.dueAmount > 0 ? lastEntry.dueAmount : 0;
+                }
+                return latestDue;
+            };
+
+            const updatePreviousDueDisplay = () => {
+                const customerName = getValue(fieldIds.customerInfo('discount'));
+                const customerPhone = getValue(fieldIds.phone('discount'));
+                const previousDue = findTotalPreviousDue(customerName, customerPhone);
+                setHTML(fieldIds.previousDue(), formatCurrency(previousDue));
+                updateTotalAndDue('discount');
+            };
+
+            const getPrice = (product, type) => {
+                const isDiscount = type === 'discount';
+                switch (product) {
+                    case 'petrol': return getNumericValue(isDiscount ? currentSettings.petrolDiscountPrice : currentSettings.petrolPrice);
+                    case 'octane': return getNumericValue(isDiscount ? currentSettings.octaneDiscountPrice : currentSettings.octanePrice);
+                    case 'diesel': return getNumericValue(isDiscount ? currentSettings.dieselDiscountPrice : currentSettings.dieselPrice);
+                    case 'mobil': return getNumericValue(isDiscount ? currentSettings.mobilDiscountPrice : currentSettings.mobilPrice);
+                    default: return 0;
+                }
+            };
+
+            const calculateAmount = (literInputId, amountInputId, product, type) => {
+                const price = getPrice(product, type);
+                const liters = getFloatValue(literInputId);
+                if (price > 0 && liters > 0) {
+                    setValue(amountInputId, formatCurrency(liters * price));
+                } else if (liters === 0 && getValue(literInputId) === '0') {
+                     setValue(amountInputId, '0.00');
+                } else if (getValue(literInputId) === '') {
+                     setValue(amountInputId, '');
+                }
+                updateTotalAndDue(type);
+            };
+
+            const calculateLiters = (literInputId, amountInputId, product, type) => {
+                const price = getPrice(product, type);
+                const amount = getFloatValue(amountInputId);
+                 if (price > 0 && amount > 0) {
+                    setValue(literInputId, formatLiters(amount / price));
+                 } else if (amount === 0 && getValue(amountInputId) === '0') {
+                      setValue(literInputId, '0.00');
+                 } else if (getValue(amountInputId) === '') {
+                     setValue(literInputId, '');
+                 }
+                updateTotalAndDue(type);
+            };
+
+            const updateTotalAndDue = (type, triggeredByPaidAmount = false) => {
+                const prefix = type;
+                const currentItemsTotal = getFloatValue(fieldIds.petrolAmount(prefix)) +
+                                        getFloatValue(fieldIds.octaneAmount(prefix)) +
+                                        getFloatValue(fieldIds.dieselAmount(prefix)) +
+                                        getFloatValue(fieldIds.mobilAmount(prefix));
+                let total = currentItemsTotal;
+
+                if (type === 'discount') {
+                    const previousDue = getFloatFromElement(fieldIds.previousDue());
+                    total = currentItemsTotal + previousDue;
+                    setHTML(fieldIds.currentItemsTotal(), formatCurrency(currentItemsTotal));
+                }
+                setHTML(fieldIds.totalAmount(prefix), formatCurrency(total));
+
+                if (!triggeredByPaidAmount && total > 0) { // Set paid amount to total only if total > 0
+                    setValue(fieldIds.paidAmount(prefix), formatCurrency(total));
+                } else if (!triggeredByPaidAmount && total <= 0) {
+                    setValue(fieldIds.paidAmount(prefix), ''); // Clear paid if total is 0 or less
+                }
+
+
+                const paid = getFloatValue(fieldIds.paidAmount(prefix));
+                const due = total - paid;
+
+                setHTML(fieldIds.dueAmount(prefix), formatCurrency(due));
+                const dueElement = getElement(fieldIds.dueAmount(prefix));
+                if (dueElement) dueElement.classList.toggle('has-due', due > 0.009);
+            };
+
+            const recalculateSalesForm = (type) => {
+                 const prefix = type;
+                 const products = ['petrol', 'octane', 'diesel', 'mobil'];
+                 products.forEach(prod => {
+                    const literId = fieldIds[`${prod}Liter`](prefix);
+                    const amountId = fieldIds[`${prod}Amount`](prefix);
+                    const literInput = getElement(literId);
+                    if (literInput && literInput.value) calculateAmount(literId, amountId, prod, type);
+                    else {
+                        const amountInput = getElement(amountId);
+                        if (amountInput && amountInput.value) calculateLiters(literId, amountId, prod, type);
+                        else { // Both empty, ensure amount is also empty
+                             setValue(amountId, '');
+                        }
+                    }
+                 });
+                 if (type === 'discount') updatePreviousDueDisplay();
+                 else updateTotalAndDue(type);
+            };
+
+            ['general', 'discount'].forEach(type => {
+                const prefix = type;
+                const form = salesForms[type];
+                if (!form) return;
+
+                const products = ['petrol', 'octane', 'diesel', 'mobil'];
+                products.forEach(product => {
+                    const literInput = getElement(fieldIds[`${product}Liter`](prefix));
+                    const amountInput = getElement(fieldIds[`${product}Amount`](prefix));
+                    if (literInput) {
+                        literInput.addEventListener('input', () => calculateAmount(fieldIds[`${product}Liter`](prefix), fieldIds[`${product}Amount`](prefix), product, type));
+                        literInput.addEventListener('blur', () => { if(literInput.value) literInput.value = formatLiters(literInput.value); });
+                    }
+                    if (amountInput) {
+                        amountInput.addEventListener('input', () => calculateLiters(fieldIds[`${product}Liter`](prefix), fieldIds[`${product}Amount`](prefix), product, type));
+                        amountInput.addEventListener('blur', () => { if(amountInput.value) amountInput.value = formatCurrency(amountInput.value); });
+                    }
+                });
+
+                const paidInput = getElement(fieldIds.paidAmount(prefix));
+                if (paidInput) {
+                    paidInput.addEventListener('input', () => updateTotalAndDue(type, true));
+                    paidInput.addEventListener('blur', () => { if(paidInput.value) paidInput.value = formatCurrency(paidInput.value); updateTotalAndDue(type, true); });
+                }
+
+                if (type === 'discount') {
+                    const customerInfoInput = getElement(fieldIds.customerInfo(prefix));
+                    const phoneInput = getElement(fieldIds.phone(prefix));
+                    if (customerInfoInput) customerInfoInput.addEventListener('blur', updatePreviousDueDisplay);
+                    if (phoneInput) phoneInput.addEventListener('blur', updatePreviousDueDisplay);
+                }
+
+                // Enter/Tab navigation
+                const focusOrder = [
+                    fieldIds.petrolLiter(prefix),
+                    fieldIds.octaneLiter(prefix),
+                    fieldIds.dieselLiter(prefix),
+                    fieldIds.mobilLiter(prefix),
+                    fieldIds.customerInfo(prefix),
+                    fieldIds.phone(prefix),
+                    fieldIds.remarks(prefix),
+                    fieldIds.paidAmount(prefix)
+                    // The print button will be handled as the last step
+                ];
+
+                focusOrder.forEach((fieldId, index) => {
+                    const element = getElement(fieldId);
+                    if (element) {
+                        element.addEventListener('keydown', (e) => {
+                            if (e.key === 'Enter' || e.key === 'Tab' && !e.shiftKey) {
+                                e.preventDefault();
+                                let nextElement;
+                                if (index < focusOrder.length - 1) {
+                                    nextElement = getElement(focusOrder[index + 1]);
+                                } else { // Last element in focusOrder, go to print button
+                                    const printButton = form.querySelector('.print-btn');
+                                    if (printButton) printButton.focus();
+                                    return;
+                                }
+
+                                if (nextElement) {
+                                    nextElement.focus();
+                                    if (typeof nextElement.select === 'function') nextElement.select();
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+
+            const switchTab = (tabId) => {
+                tabs.forEach(button => button.classList.toggle('active', button.dataset.tab === tabId));
+                tabPanes.forEach(pane => pane.classList.toggle('active', pane.id === `${tabId}-tab`));
+
+                currentActiveTabPrefix = (tabId === 'general-sales' || tabId === 'discount-sales') ?
+                                         (tabId === 'general-sales' ? 'general' : 'discount') : currentActiveTabPrefix;
+
+                if (tabId === 'general-sales' || tabId === 'discount-sales') {
+                    recalculateSalesForm(currentActiveTabPrefix); // Recalculate before focus
+                    const petrolLiterInput = getElement(fieldIds.petrolLiter(currentActiveTabPrefix));
+                    if (petrolLiterInput) setTimeout(() => petrolLiterInput.focus(), 0);
+                } else if (tabId === 'saved-data') displaySavedData();
+                else if (tabId === 'due-list') displayDueList();
+                else if (tabId === 'report') generateReport();
+            };
+            tabs.forEach(button => button.addEventListener('click', () => switchTab(button.dataset.tab)));
+
+            const loadSalesData = () => {
+                const storedData = localStorage.getItem(LOCAL_STORAGE_SALES_KEY);
+                salesData = storedData ? JSON.parse(storedData) : [];
+                 salesData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)); // Sort by date descending
+                if (salesData.length > MAX_LOCAL_STORAGE_ENTRIES) {
+                    salesData = salesData.slice(0, MAX_LOCAL_STORAGE_ENTRIES); // Keep newest
+                    localStorage.setItem(LOCAL_STORAGE_SALES_KEY, JSON.stringify(salesData));
+                }
+            };
+
+            const loadSuggestions = () => {
+                customerSuggestions = new Set(JSON.parse(localStorage.getItem(LOCAL_STORAGE_CUSTOMER_SUGGESTIONS_KEY) || '[]'));
+                phoneSuggestions = new Set(JSON.parse(localStorage.getItem(LOCAL_STORAGE_PHONE_SUGGESTIONS_KEY) || '[]'));
+                updateDatalists();
+            };
+
+            const updateDatalists = () => {
+                customerDatalist.innerHTML = '';
+                customerSuggestions.forEach(cust => { if(cust) customerDatalist.innerHTML += `<option value="${cust}"></option>`; });
+                phoneDatalist.innerHTML = '';
+                phoneSuggestions.forEach(ph => { if(ph) phoneDatalist.innerHTML += `<option value="${ph}"></option>`; });
+            };
+
+            const saveSalesData = (entry) => {
+                salesData.unshift(entry);
+                salesData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                if (salesData.length > MAX_LOCAL_STORAGE_ENTRIES) salesData.pop();
+                localStorage.setItem(LOCAL_STORAGE_SALES_KEY, JSON.stringify(salesData));
+
+                if (entry.customerInfo) customerSuggestions.add(entry.customerInfo);
+                if (entry.phone) phoneSuggestions.add(entry.phone);
+                localStorage.setItem(LOCAL_STORAGE_CUSTOMER_SUGGESTIONS_KEY, JSON.stringify([...customerSuggestions].filter(Boolean)));
+                localStorage.setItem(LOCAL_STORAGE_PHONE_SUGGESTIONS_KEY, JSON.stringify([...phoneSuggestions].filter(Boolean)));
+                updateDatalists();
+                saveToGoogleSheet(entry);
+            };
+
+            const saveToGoogleSheet = async (data) => {
+                const sheetUrl = currentSettings.apiKey;
+                const sheetId = currentSettings.sheetId;
+                if (!sheetUrl || !sheetId) return;
+
+                const sheetData = {
+                     timestamp: data.timestamp, id: data.id, type: data.saleType === 'general' ? 'সাধারণ' : 'ছাড়',
+                     customerInfo: data.customerInfo, phone: data.phone, remarks: data.remarks,
+                     petrolLiter: data.items.petrol?.liter || 0, petrolAmount: data.items.petrol?.amount || 0,
+                     octaneLiter: data.items.octane?.liter || 0, octaneAmount: data.items.octane?.amount || 0,
+                     dieselLiter: data.items.diesel?.liter || 0, dieselAmount: data.items.diesel?.amount || 0,
+                     mobilLiter: data.items.mobil?.liter || 0, mobilAmount: data.items.mobil?.amount || 0,
+                     currentItemsTotal: data.currentItemsTotal || data.totalAmount,
+                     previousDueLoaded: data.previousDueLoaded || 0,
+                     totalAmount: data.totalAmount, paidAmount: data.paidAmount, dueAmount: data.dueAmount,
+                     businessHeader: data.businessInfo.headerName, sheetIdToUse: sheetId
+                 };
+                 try {
+                    await fetch(sheetUrl, {
+                         method: 'POST', mode: 'no-cors', cache: 'no-cache',
+                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                         body: new URLSearchParams(sheetData).toString()
+                     });
+                     console.log('Data likely sent to Google Sheet.');
+                 } catch (error) { console.error('Error sending data to Google Sheet:', error); }
+            };
+
+            const clearSalesForm = (type) => {
+                const prefix = type;
+                const form = salesForms[prefix];
+                if (form) {
+                    form.reset();
+                    ['petrol', 'octane', 'diesel', 'mobil'].forEach(product => {
+                        setValue(fieldIds[`${product}Liter`](prefix), '');
+                        setValue(fieldIds[`${product}Amount`](prefix), '');
+                    });
+                    if (type === 'discount') {
+                        setHTML(fieldIds.previousDue(), '0.00');
+                        setHTML(fieldIds.currentItemsTotal(), '0.00');
+                    }
+                    setHTML(fieldIds.totalAmount(prefix), '0.00');
+                    setValue(fieldIds.paidAmount(prefix), ''); // Clear paid amount field
+                    setHTML(fieldIds.dueAmount(prefix), '0.00');
+                    getElement(fieldIds.dueAmount(prefix))?.classList.remove('has-due');
+                    const petrolLiterInput = getElement(fieldIds.petrolLiter(prefix));
+                    if (petrolLiterInput) setTimeout(() => petrolLiterInput.focus(), 0);
+                }
+            };
+
+            const getSalesDataFromForm = (type) => {
+                const prefix = type;
+                const now = new Date();
+                const entryId = `SALE-${now.getTime()}-${Math.random().toString(16).slice(2, 8)}`;
+                const items = {};
+                ['petrol', 'octane', 'diesel', 'mobil'].forEach(product => {
+                     const liter = getFloatValue(fieldIds[`${product}Liter`](prefix));
+                     const amount = getFloatValue(fieldIds[`${product}Amount`](prefix));
+                     if (liter > 0 || amount > 0) { // Store if either liter or amount is present
+                         items[product] = { liter, amount, unitPrice: getPrice(product, prefix) };
+                     }
+                });
+
+                let totalAmount = 0, paidAmount = getFloatValue(fieldIds.paidAmount(prefix)), dueAmount = 0;
+                let previousDueLoaded = 0, currentItemsTotalVal = 0;
+
+                if (type === 'discount') {
+                    previousDueLoaded = getFloatFromElement(fieldIds.previousDue());
+                    currentItemsTotalVal = getFloatValue(fieldIds.petrolAmount(prefix)) +
+                                        getFloatValue(fieldIds.octaneAmount(prefix)) +
+                                        getFloatValue(fieldIds.dieselAmount(prefix)) +
+                                        getFloatValue(fieldIds.mobilAmount(prefix));
+                    totalAmount = currentItemsTotalVal + previousDueLoaded;
+                    dueAmount = totalAmount - paidAmount;
+                } else {
+                    currentItemsTotalVal = getFloatValue(fieldIds.petrolAmount(prefix)) +
+                                        getFloatValue(fieldIds.octaneAmount(prefix)) +
+                                        getFloatValue(fieldIds.dieselAmount(prefix)) +
+                                        getFloatValue(fieldIds.mobilAmount(prefix));
+                    totalAmount = currentItemsTotalVal;
+                    dueAmount = totalAmount - paidAmount;
+                }
+
+
+                return {
+                     id: entryId, timestamp: now.toISOString(), saleType: type, items: items,
+                     customerInfo: getValue(fieldIds.customerInfo(prefix)), phone: getValue(fieldIds.phone(prefix)),
+                     remarks: getValue(fieldIds.remarks(prefix)), currentItemsTotal: currentItemsTotalVal,
+                     previousDueLoaded: previousDueLoaded, totalAmount: totalAmount, paidAmount: paidAmount, dueAmount: dueAmount,
+                     businessInfo: {
+                        headerName: currentSettings.headerName, dealerName: currentSettings.dealerName,
+                        address: currentSettings.address, phone: currentSettings.phone,
+                     }
+                };
+            };
+
+            const handleSave = (type, andPrint = false) => {
+                 const data = getSalesDataFromForm(type);
+                 const hasItems = Object.keys(data.items).length > 0 || data.currentItemsTotal > 0;
+                 // Allow saving if there's a payment towards previous due, even if no current items.
+                 const payingPreviousDue = type === 'discount' && data.previousDueLoaded > 0 && data.paidAmount > 0 && !hasItems;
+
+                 if (!hasItems && !payingPreviousDue) {
+                     alert('অনুগ্রহ করে অন্তত একটি পণ্যের পরিমাণ বা টাকার ঘর পূরণ করুন, অথবা পূর্বের বাকি পরিশোধ করুন।');
+                     return;
+                 }
+                 saveSalesData(data);
+                 if (andPrint) generateAndPrintReceipt(data);
+                 clearSalesForm(type); // Clear form AFTER data is collected
+                 displaySavedData();
+                 displayDueList();
+                 generateReport();
+            };
+
+            const handleShare = (type) => {
+                const data = getSalesDataFromForm(type);
+                if (data.totalAmount <= 0 && data.previousDueLoaded <=0) {
+                     alert('শেয়ার করার জন্য অন্তত কিছু বিক্রয় তথ্য যোগ করুন।'); return;
+                }
+                let shareText = `*${data.businessInfo.headerName}*\n`;
+                if(data.businessInfo.dealerName) shareText += `${data.businessInfo.dealerName}\n`;
+                shareText += `${data.businessInfo.address}\nফোন: ${data.businessInfo.phone}\n--------------------\n`;
+                shareText += `তারিখ: ${new Date(data.timestamp).toLocaleString('bn-BD', { dateStyle: 'short', timeStyle: 'short' })}\n`;
+                if (data.customerInfo) shareText += `গ্রাহক: ${data.customerInfo}\n`;
+                if (data.phone) shareText += `ফোন: ${data.phone}\n`;
+                shareText += `বিক্রয় ধরন: ${data.saleType === 'general' ? 'সাধারণ' : 'ছাড়'}\n--------------------\n`;
+
+                const productNamesBn = {petrol: 'পেট্রোল', octane: 'অকটেন', diesel: 'ডিজেল', mobil: 'মবিল'};
+                let itemsExist = false;
+                Object.keys(productNamesBn).forEach(key => {
+                    if (data.items[key] && (data.items[key].liter > 0 || data.items[key].amount > 0) ) {
+                        itemsExist = true;
+                        const value = data.items[key];
+                        const productName = productNamesBn[key] || key.charAt(0).toUpperCase() + key.slice(1);
+                        shareText += `${productName}: ${formatLiters(value.liter)} লি. @${formatCurrency(value.unitPrice)} = ${formatCurrency(value.amount)} ৳\n`;
+                    }
+                });
+                if(itemsExist) shareText += `--------------------\n`;
+
+                if (data.saleType === 'discount' && data.previousDueLoaded > 0) {
+                     shareText += `পূর্বের বাকি: ${formatCurrency(data.previousDueLoaded)} ৳\n`;
+                     shareText += `চলতি মোট: ${formatCurrency(data.currentItemsTotal)} ৳\n`;
+                }
+                shareText += `সর্বমোট টাকা: ${formatCurrency(data.totalAmount)} ৳\n`;
+                if (data.dueAmount > 0.009) { // Only show Jama/Baki if there's a due
+                    shareText += `জমা: ${formatCurrency(data.paidAmount)} ৳\n`;
+                    shareText += `নতুন বাকি: ${formatCurrency(data.dueAmount)} ৳\n`;
+                } else {
+                    shareText += `সর্বমোট পরিশোধিত: ${formatCurrency(data.paidAmount)} ৳\n`;
+                }
+                if (data.remarks) shareText += `মন্তব্য: ${data.remarks}\n`;
+                shareText += `--------------------\nDeveloped by: kamal4207@gmail.com`;
+
+                if (navigator.share) navigator.share({ title: 'বিক্রয় রশিদ', text: shareText });
+                else navigator.clipboard.writeText(shareText).then(() => alert('রশিদের তথ্য কপি করা হয়েছে।')).catch(() => alert('তথ্য কপি করতে সমস্যা হয়েছে।'));
+            };
+
+            document.querySelectorAll('.save-btn').forEach(btn => btn.addEventListener('click', () => handleSave(btn.dataset.type)));
+            document.querySelectorAll('.print-btn').forEach(btn => btn.addEventListener('click', () => handleSave(btn.dataset.type, true)));
+            document.querySelectorAll('.share-btn').forEach(btn => btn.addEventListener('click', () => handleShare(btn.dataset.type)));
+            if(clearAllBtn) clearAllBtn.addEventListener('click', () => {
+                if(confirm(`আপনি কি "${currentActiveTabPrefix === 'general' ? 'সাধারণ বিক্রয়' : 'ছাড় বিক্রয়'}" ফর্মের সমস্ত লেখা মুছে ফেলতে চান?`)) {
+                    clearSalesForm(currentActiveTabPrefix);
+                }
+            });
+
+            // Bengali Number to Words (Simplified for currency)
+            function amountToWordsBn(amount) {
+                const num = Math.floor(amount); // Integer part
+                const decimal = Math.round((amount - num) * 100); // Paisa part
+
+                const onesBn = ["", "এক", "দুই", "তিন", "চার", "পাঁচ", "ছয়", "সাত", "আট", "নয়", "দশ", "এগার", "বার", "তের", "চৌদ্দ", "পনের", "ষোল", "সতের", "আঠার", "উনিশ"];
+                const tensBn = ["", "", "বিশ", "ত্রিশ", "চল্লিশ", "পঞ্চাশ", "ষাট", "সত্তর", "আশি", "নব্বই"];
+
+                function convertLessThanThousand(n) {
+                    if (n === 0) return "";
+                    let result = "";
+                    if (n >= 100) {
+                        result += onesBn[Math.floor(n / 100)] + " শত ";
+                        n %= 100;
+                    }
+                    if (n >= 20) {
+                        result += tensBn[Math.floor(n / 10)] + " ";
+                        n %= 10;
+                    }
+                    if (n > 0) {
+                        result += onesBn[n] + " ";
+                    }
+                    return result.trim();
+                }
+
+                if (num === 0) return "শূন্য টাকা" + (decimal > 0 ? " " + convertLessThanThousand(decimal) + " পয়সা" : "");
+
+                let words = "";
+                if (num >= 10000000) { // Crore
+                    words += convertLessThanThousand(Math.floor(num / 10000000)) + " কোটি ";
+                    num %= 10000000;
+                }
+                if (num >= 100000) { // Lakh
+                    words += convertLessThanThousand(Math.floor(num / 100000)) + " লাখ ";
+                    num %= 100000;
+                }
+                if (num >= 1000) { // Thousand
+                    words += convertLessThanThousand(Math.floor(num / 1000)) + " হাজার ";
+                    num %= 1000;
+                }
+                words += convertLessThanThousand(num);
+                words = words.trim() + " টাকা";
+
+                if (decimal > 0) {
+                    words += " " + convertLessThanThousand(decimal) + " পয়সা";
+                }
+                return words.replace(/\s+/g, ' ').trim(); // Clean up extra spaces
+            }
+
+            const generateAndPrintReceipt = (data) => {
+                 const receiptDate = new Date(data.timestamp);
+                 let receiptHTML = `<div class="header">
+                                     <h3>${data.businessInfo.headerName}</h3>`;
+                 if(data.businessInfo.dealerName) receiptHTML += `<p>${data.businessInfo.dealerName}</p>`;
+                 receiptHTML += `<p>${data.businessInfo.address}</p>
+                                 <p class="org-phone">ফোন: ${data.businessInfo.phone}</p>
+                                 <div class="datetime-container">
+                                     <p>তারিখ: ${receiptDate.toLocaleDateString('bn-BD', {day: '2-digit', month: '2-digit', year: 'numeric'})}</p>
+                                     <p>সময়: ${receiptDate.toLocaleTimeString('bn-BD', {hour: '2-digit', minute: '2-digit', hour12: true})}</p>
+                                 </div>
+                             </div><hr>`;
+                 if (data.customerInfo || data.phone) {
+                     receiptHTML += `<div class="customer-info">`;
+                     if (data.customerInfo) receiptHTML += `<p>গ্রাহক: ${data.customerInfo}</p>`;
+                     if (data.phone) receiptHTML += `<p>ফোন: ${data.phone}</p>`;
+                     receiptHTML += `</div><hr>`;
+                 }
+
+                const productNamesBn = {petrol: 'পেট্রোল', octane: 'অকটেন', diesel: 'ডিজেল', mobil: 'মবিল'};
+                const allProducts = ['petrol', 'octane', 'diesel', 'mobil']; // To show all products in receipt
+
+                receiptHTML += `<div class="items">
+                                    <div class="item-header-line">
+                                        <span>পণ্য</span>
+                                        <span>লিটার</span>
+                                        <span>দর (৳)</span>
+                                        <span>টাকা (৳)</span>
+                                    </div>`;
+                allProducts.forEach(key => {
+                    const productNameBn = productNamesBn[key] || key.charAt(0).toUpperCase() + key.slice(1);
+                    if (data.items[key] && (data.items[key].liter > 0 || data.items[key].amount > 0)) {
+                        const value = data.items[key];
+                        receiptHTML += `<div class="item-line">
+                                            <span>${productNameBn}</span>
+                                            <span>${formatLiters(value.liter)}</span>
+                                            <span>${formatCurrency(value.unitPrice)}</span>
+                                            <span>${formatCurrency(value.amount)}</span>
+                                        </div>`;
+                    } else {
+                         // Show product name but empty values if not sold, or "-"
+                         receiptHTML += `<div class="item-line">
+                                             <span>${productNameBn}</span>
+                                             <span>-</span>
+                                             <span>-</span>
+                                             <span>-</span>
+                                         </div>`;
+                    }
+                });
+                receiptHTML += `</div>`;
+
+                 receiptHTML += `<div class="totals">`;
+                  if (data.saleType === 'discount' && data.previousDueLoaded > 0) {
+                     receiptHTML += `<div class="item-line"><span>পূর্বের বাকি:</span><span>${formatCurrency(data.previousDueLoaded)}</span></div>`;
+                     receiptHTML += `<div class="item-line"><span>চলতি মোট:</span><span>${formatCurrency(data.currentItemsTotal)}</span></div><hr style="margin:1mm 0;">`;
+                 }
+
+                 receiptHTML += `<div class="item-line"><span>সর্বমোট:</span><span>${formatCurrency(data.totalAmount)}</span></div>`;
+
+                 if (data.dueAmount > 0.009) { // If there is a due amount
+                    receiptHTML += `<div class="item-line"><span>জমা:</span><span>${formatCurrency(data.paidAmount)}</span></div>
+                                    <div class="item-line"><span>নতুন বাকি:</span><span>${formatCurrency(data.dueAmount)}</span></div>`;
+                 } else { // Fully paid
+                    receiptHTML += `<div class="item-line"><span>সর্বমোট পরিশোধিত:</span><span>${formatCurrency(data.paidAmount)}</span></div>`;
+                 }
+                 receiptHTML += `</div>`; // End .totals
+
+                 if (data.dueAmount <= 0.009 && data.paidAmount > 0) { // Only show amount in words if fully paid and there was a payment
+                    receiptHTML += `<div class="amount-in-words">কথায়: ${amountToWordsBn(data.paidAmount)} মাত্র।</div>`;
+                 }
+
+
+                 if (data.remarks) receiptHTML += `<hr style="margin:1mm 0;"><p style="text-align:left; font-size:7.5pt; margin-top:2px;">মন্তব্য: ${data.remarks}</p>`;
+
+                 receiptHTML += `<p class="footer-thanks" style="margin-top:5px;">ধন্যবাদ!</p>
+                                <p class="footer-dev"> kamal4207@gmail.com</p>`;
+
+                 printReceiptContent.innerHTML = receiptHTML;
+                 printReceiptArea.style.display = 'block';
+                 setTimeout(() => {
+                    window.print();
+                    // printReceiptArea.style.display = 'none'; // Keep it for debugging if needed
+                 }, 300); // Increased delay for rendering
+            };
+
+
+            const displaySavedData = () => {
+                savedDataTableBody.innerHTML = '';
+                let dataToDisplay = salesData; // Already sorted by timestamp desc
+                const clearFilterBtn = getElement('clear-saved-data-filter-btn');
+
+                if (currentSavedDataFilter) {
+                    dataToDisplay = salesData.filter(entry => {
+                        const entryCust = entry.customerInfo?.trim().toLowerCase() || 'unknown_customer_placeholder_sd';
+                        const entryPhone = entry.phone?.trim() || 'unknown_phone_placeholder_sd';
+                        const entryKey = `${entryCust}|${entryPhone}`;
+                        return entryKey === currentSavedDataFilter;
+                    });
+                    if (clearFilterBtn) clearFilterBtn.style.display = 'inline-block';
+                } else {
+                    if (clearFilterBtn) clearFilterBtn.style.display = 'none';
+                }
+
+                if (dataToDisplay.length === 0) {
+                    const message = currentSavedDataFilter ? 'এই গ্রাহকের জন্য কোন লেনদেন পাওয়া যায়নি।' : 'কোন ডাটা পাওয়া যায়নি।';
+                    savedDataTableBody.innerHTML = `<tr><td colspan="9" style="text-align:center;">${message}</td></tr>`;
+                    return;
+                }
+                dataToDisplay.forEach(entry => {
+                    const row = savedDataTableBody.insertRow();
+                    const itemsString = Object.entries(entry.items).map(([k, v]) => {
+                        if(v.liter > 0 || v.amount > 0) { // Only show items that were actually part of the sale
+                           return `${k.slice(0,1).toUpperCase()}:${formatLiters(v.liter)}`;
+                        }
+                        return null;
+                    }).filter(Boolean).join(', ');
+
+                    row.innerHTML = `<td>${entry.id.substring(entry.id.length - 6)}</td>
+                        <td>${new Date(entry.timestamp).toLocaleString('bn-BD', {dateStyle: 'short', timeStyle: 'short'})}</td>
+                        <td>${entry.customerInfo || '-'}</td>
+                        <td>${entry.saleType === 'general' ? 'সাধারণ' : 'ছাড়'}</td>
+                        <td class="amount">${formatCurrency(entry.totalAmount)}</td>
+                        <td class="amount">${formatCurrency(entry.paidAmount)}</td>
+                        <td class="amount ${entry.dueAmount > 0.009 ? 'has-due' : ''}">${formatCurrency(entry.dueAmount)}</td>
+                        <td>${itemsString || '-'}</td>
+                        <td class="actions"><button class="print-saved-btn" data-entry-id="${entry.id}" title="পুনরায় প্রিন্ট করুন">প্রিন্ট</button></td>`;
+                });
+            };
+            savedDataTableBody.addEventListener('click', (event) => {
+                if (event.target.classList.contains('print-saved-btn')) {
+                    const entryToPrint = salesData.find(entry => entry.id === event.target.dataset.entryId);
+                    if (entryToPrint) generateAndPrintReceipt(entryToPrint);
+                }
+            });
+
+            const clearSavedDataFilterBtn = getElement('clear-saved-data-filter-btn');
+            if (clearSavedDataFilterBtn) {
+                clearSavedDataFilterBtn.addEventListener('click', () => {
+                    currentSavedDataFilter = null;
+                    clearSavedDataFilterBtn.style.display = 'none';
+                    displaySavedData();
+                });
+            }
+
+
+            const displayDueList = () => {
+                 dueListTableBody.innerHTML = '';
+                 const customerDueMap = new Map();
+                 // Iterate salesData (which is sorted newest first)
+                 for (const entry of salesData) {
+                      const custInfo = entry.customerInfo?.trim().toLowerCase() || 'unknown_customer_placeholder_dl';
+                      const custPhone = entry.phone?.trim() || 'unknown_phone_placeholder_dl';
+                      const customerKey = `${custInfo}|${custPhone}`;
+
+                      // Since data is sorted newest first, the first time we see a customer, it's their latest entry
+                      if (!customerDueMap.has(customerKey)) {
+                           customerDueMap.set(customerKey, { ...entry, customerKey });
+                      }
+                 }
+                 const dueEntries = Array.from(customerDueMap.values()).filter(e => e.dueAmount > 0.009);
+                 if (dueEntries.length === 0) {
+                     dueListTableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;">কোন বাকি ডাটা পাওয়া যায়নি।</td></tr>'; return;
+                 }
+                 // Sort by customer name for display
+                 dueEntries.sort((a, b) => (a.customerInfo || '').localeCompare(b.customerInfo || '', 'bn'));
+                 dueEntries.forEach(entry => {
+                     const row = dueListTableBody.insertRow();
+                     row.classList.add('due-item');
+                     row.innerHTML = `<td>${entry.id.substring(entry.id.length - 6)}</td>
+                        <td>${new Date(entry.timestamp).toLocaleString('bn-BD', {dateStyle: 'short', timeStyle: 'short'})}</td>
+                        <td><a href="#" class="due-customer-link" data-customer-key="${entry.customerKey}">${entry.customerInfo || '-'}</a></td>
+                        <td>${entry.phone || '-'}</td>
+                        <td class="amount">${formatCurrency(entry.dueAmount)}</td>
+                        <td>${entry.remarks || '-'}</td>`;
+                 });
+            };
+            if (dueListTableBody) {
+                dueListTableBody.addEventListener('click', (event) => {
+                    if (event.target.classList.contains('due-customer-link')) {
+                        event.preventDefault();
+                        currentSavedDataFilter = event.target.dataset.customerKey;
+                        switchTab('saved-data');
+                    }
+                });
+            }
+
+            const generateReport = () => {
+                const fromDateStr = getValue('report-from-date');
+                const toDateStr = getValue('report-to-date');
+                const today = new Date();
+                const getStartOfDay = (date) => { const d = new Date(date); d.setHours(0,0,0,0); return d; };
+                const getEndOfDay = (date) => { const d = new Date(date); d.setHours(23,59,59,999); return d; };
+
+                let filterStartDate, filterEndDate;
+
+                if (fromDateStr && toDateStr) {
+                    filterStartDate = getStartOfDay(new Date(fromDateStr));
+                    filterEndDate = getEndOfDay(new Date(toDateStr));
+                } else { // Default to today
+                    filterStartDate = getStartOfDay(today);
+                    filterEndDate = getEndOfDay(today);
+                    setValue('report-from-date', today.toISOString().split('T')[0]);
+                    setValue('report-to-date', today.toISOString().split('T')[0]);
+                }
+
+
+                setHTML('report-current-date', filterStartDate.toLocaleDateString('bn-BD', { dateStyle: 'long' }) + (filterStartDate.toDateString() !== filterEndDate.toDateString() ? ` - ${filterEndDate.toLocaleDateString('bn-BD', {dateStyle: 'long'})}` : ''));
+
+                const report = {
+                    daily: { general: {}, discount: {} },
+                    overall: { generalLiters: 0, discountLiters: 0, totalDue: 0 },
+                    dueListForReport: new Map()
+                };
+                ['petrol', 'octane', 'diesel', 'mobil'].forEach(p => {
+                    report.daily.general[p] = { liters: 0, amount: 0 };
+                    report.daily.discount[p] = { liters: 0, amount: 0 };
+                });
+
+                const customerLatestDue = new Map(); // For overall total due from all time
+                salesData.forEach(entry => {
+                    const entryDate = new Date(entry.timestamp);
+
+                    // Daily sales report for selected date range
+                    if (entryDate >= filterStartDate && entryDate <= filterEndDate) {
+                        const target = entry.saleType === 'general' ? report.daily.general : report.daily.discount;
+                        let currentPeriodLiters = 0;
+
+                        Object.entries(entry.items).forEach(([product, itemData]) => {
+                            if (target[product]) {
+                                target[product].liters += getNumericValue(itemData.liter);
+                                target[product].amount += getNumericValue(itemData.amount);
+                            }
+                             currentPeriodLiters += getNumericValue(itemData.liter);
+                        });
+                        if(entry.saleType === 'general') report.overall.generalLiters += currentPeriodLiters;
+                        else report.overall.discountLiters += currentPeriodLiters;
+
+                         // Due list for the report for the selected period
+                        const custInfoReport = entry.customerInfo?.trim().toLowerCase() || 'unknown_report_cust';
+                        const custPhoneReport = entry.phone?.trim() || 'unknown_report_phone';
+                        const customerKeyReport = `${custInfoReport}|${custPhoneReport}`;
+
+                        // Update with the latest entry within the period for this customer
+                        if (!report.dueListForReport.has(customerKeyReport) || new Date(entry.timestamp) > new Date(report.dueListForReport.get(customerKeyReport).timestamp)) {
+                           if(entry.dueAmount > 0.009) {
+                                report.dueListForReport.set(customerKeyReport, {
+                                    customerInfo: entry.customerInfo || '-',
+                                    phone: entry.phone || '-',
+                                    dueAmount: entry.dueAmount,
+                                    timestamp: entry.timestamp
+                                });
+                           } else {
+                                // If latest entry has no due, remove them if they were added from an older entry in the period
+                               if(report.dueListForReport.has(customerKeyReport)) report.dueListForReport.delete(customerKeyReport);
+                           }
+                        }
+
+                    }
+
+                    // Overall Total Due calculation (all time, latest entry for each customer)
+                    const custInfoAll = entry.customerInfo?.trim().toLowerCase() || 'unknown_all_cust';
+                    const custPhoneAll = entry.phone?.trim() || 'unknown_all_phone';
+                    const customerKeyAll = `${custInfoAll}|${custPhoneAll}`;
+                    if (!customerLatestDue.has(customerKeyAll) || new Date(entry.timestamp) > new Date(customerLatestDue.get(customerKeyAll).timestamp)) {
+                       customerLatestDue.set(customerKeyAll, { due: entry.dueAmount, timestamp: entry.timestamp });
+                    }
+                });
+                customerLatestDue.forEach(value => { if (value.due > 0.009) report.overall.totalDue += value.due; });
+
+                ['general', 'discount'].forEach(st => {
+                    ['petrol', 'octane', 'diesel', 'mobil'].forEach(p => {
+                        setHTML(`report-${st}-${p}-liters`, formatLiters(report.daily[st][p].liters));
+                        setHTML(`report-${st}-${p}-amount`, formatCurrency(report.daily[st][p].amount));
+                    });
+                });
+                setHTML('report-general-liters-selected', formatLiters(report.overall.generalLiters));
+                setHTML('report-discount-liters-selected', formatLiters(report.overall.discountLiters));
+                setHTML('report-total-due', formatCurrency(report.overall.totalDue));
+
+                // Populate due list in report tab
+                reportDueListTableBody.innerHTML = '';
+                const reportDueEntries = Array.from(report.dueListForReport.values())
+                                            .filter(e => e.dueAmount > 0.009)
+                                            .sort((a,b) => (a.customerInfo || '').localeCompare(b.customerInfo || '', 'bn'));
+
+                if (reportDueEntries.length === 0) {
+                    reportDueListTableBody.innerHTML = '<tr><td colspan="3" style="text-align:center;">এই সময়কালে কোন বাকি পাওয়া যায়নি।</td></tr>';
+                } else {
+                    reportDueEntries.forEach(entry => {
+                        const row = reportDueListTableBody.insertRow();
+                        row.innerHTML = `<td>${entry.customerInfo}</td>
+                                         <td>${entry.phone}</td>
+                                         <td class="amount">${formatCurrency(entry.dueAmount)}</td>`;
+                    });
+                }
+
+            };
+            if (generateReportBtn) generateReportBtn.addEventListener('click', generateReport);
+
+            // Initial Load
+            loadSettings();
+            loadSalesData(); // Loads and sorts data
+            loadSuggestions();
+            switchTab(currentActiveTabPrefix); // This will also call recalculateSalesForm for the active tab
+            // displaySavedData(); // Called on tab switch
+            // displayDueList(); // Called on tab switch
+            // generateReport(); // Called on tab switch or button click
+        });
+    </script>
+</body>
+</html>
+<!-- partial -->
+  
+</body>
+</html>
